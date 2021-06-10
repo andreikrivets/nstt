@@ -12,13 +12,15 @@ const Forms = ({ content, saveNote, updateNote }) => {
   const handleSubmit = (e) => {
     const title = e.target[0].value;
     const text = e.target[1].value;
+    const tags = Array.from(new Set(text.match(/#\w+/g))) || [];
 
-    if (!noteData.id) saveNote({ id: uniqid(), title, text });
+    if (!noteData.id) saveNote({ id: uniqid(), title, text, tags });
     else {
       updateNote({
         id: noteData.id,
         title,
         text,
+        tags,
       });
     }
     setNoteData({});

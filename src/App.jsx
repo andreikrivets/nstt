@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import uniqid from 'uniqid';
-import { Container, Row, Col, Spinner } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 
 import './App.scss';
 import Forms from './components/Forms';
 import Header from './components/Header';
 import Note from './components/Note';
+import Tags from './components/Tags';
 
 import storage from './data/storage.json';
+import getTagsFromInitialText from './utils/getTagsFromInitialText';
 
 const App = () => {
   const [data, setData] = useState([]);
   const [currentNote, setCurrentNote] = useState('');
 
   useEffect(() => {
-    setData(storage);
+    setData(getTagsFromInitialText(storage));
   }, []);
 
   const handleEdit = (note) => setCurrentNote(note);
@@ -23,14 +25,6 @@ const App = () => {
   const handleUpdateNote = (newNote) =>
     setData((prev) => prev.map((note) => (note.id === newNote.id ? newNote : note)));
 
-  if (!data.length)
-    return (
-      <Container className="container">
-        <Spinner animation="grow" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </Spinner>
-      </Container>
-    );
   return (
     <Container fluid="md">
       <Row>
@@ -56,6 +50,9 @@ const App = () => {
         <Col>
           <Forms content={currentNote} saveNote={handleSaveNote} updateNote={handleUpdateNote} />
         </Col>
+      </Row>
+      <Row>
+        <Tags data={data} />
       </Row>
     </Container>
   );
