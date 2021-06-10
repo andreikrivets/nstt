@@ -1,0 +1,60 @@
+import React, { useEffect, useState } from 'react';
+import uniqid from 'uniqid';
+import { Button, ButtonGroup, Form } from 'react-bootstrap';
+
+const Forms = ({ content, saveNote, updateNote }) => {
+  const [noteData, setNoteData] = useState({});
+
+  useEffect(() => {
+    setNoteData(content);
+  }, [content]);
+
+  const handleSubmit = (e) => {
+    const title = e.target[0].value;
+    const text = e.target[1].value;
+
+    if (!noteData.id) saveNote({ id: uniqid(), title, text });
+    else {
+      updateNote({
+        id: noteData.id,
+        title,
+        text,
+      });
+    }
+    setNoteData({});
+    e.preventDefault();
+  };
+
+  const handleTitleChange = (event) => setNoteData({ ...noteData, title: event.target.value });
+  const handleTextChange = (event) => setNoteData({ ...noteData, text: event.target.value });
+
+  return (
+    <Form onSubmit={handleSubmit}>
+      <Form.Group className="mb-3">
+        <Form.Control
+          onChange={handleTitleChange}
+          value={noteData.title || ''}
+          placeholder="title"
+          required
+        />
+        <Form.Control
+          as="textarea"
+          onChange={handleTextChange}
+          value={noteData.text || ''}
+          placeholder="text"
+          required
+        />
+        <ButtonGroup>
+          <Button type="submit" variant="primary">
+            save
+          </Button>
+          <Button onClick={() => setNoteData({})} variant="secondary">
+            clear
+          </Button>
+        </ButtonGroup>
+      </Form.Group>
+    </Form>
+  );
+};
+
+export default Forms;

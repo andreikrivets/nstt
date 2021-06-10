@@ -1,2 +1,12 @@
-@import-normalize;
 @import "~bootstrap/scss/bootstrap";
+
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+.logo {
+    text-decoration: none;
+    font-size: 2rem;
+    color: darkcyan
+}
