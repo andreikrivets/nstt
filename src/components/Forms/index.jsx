@@ -32,10 +32,11 @@ const Forms = ({ content, saveNote, updateNote }) => {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Form.Group className="mb-3">
+      <Form.Group>
         <Form.Control
           onChange={handleTitleChange}
           value={noteData.title || ''}
+          size="md"
           placeholder="title"
           required
         />
@@ -43,6 +44,7 @@ const Forms = ({ content, saveNote, updateNote }) => {
           as="textarea"
           onChange={handleTextChange}
           value={noteData.text || ''}
+          size="md"
           placeholder="text"
           required
         />

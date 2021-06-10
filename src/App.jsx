@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import uniqid from 'uniqid';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 
 import './App.scss';
 import Forms from './components/Forms';
 import Header from './components/Header';
-import Note from './components/Note';
 import Tags from './components/Tags';
+import Notes from './components/Notes';
 
 import storage from './data/storage.json';
 import getTagsFromInitialText from './utils/getTagsFromInitialText';
@@ -24,35 +23,41 @@ const App = () => {
   const handleSaveNote = (newNote) => setData(() => [...data, newNote]);
   const handleUpdateNote = (newNote) =>
     setData((prev) => prev.map((note) => (note.id === newNote.id ? newNote : note)));
+  const handleOpen = (id) => console.log(id);
 
   return (
-    <Container fluid="md">
+    <Container fluid="xl">
       <Row>
         <Col>
           <Header />
         </Col>
       </Row>
       <Row>
-        {data.length ? (
-          data.map((noteData) => (
-            <Note
-              key={uniqid()}
-              data={noteData}
+        <Col xs={3}>
+          {data.length ? (
+            <Notes
+              data={data}
               handleEdit={handleEdit}
               handleDelete={handleDelete}
+              handleOpen={handleOpen}
             />
-          ))
-        ) : (
-          <p>Nothing to show</p>
-        )}
-      </Row>
-      <Row>
-        <Col>
-          <Forms content={currentNote} saveNote={handleSaveNote} updateNote={handleUpdateNote} />
+          ) : (
+            <p>nothing to show</p>
+          )}
         </Col>
-      </Row>
-      <Row>
-        <Tags data={data} />
+        <Col md>
+          <Row>
+            <Forms content={currentNote} saveNote={handleSaveNote} updateNote={handleUpdateNote} />
+          </Row>
+          <Row>
+            <Tags data={data} />
+          </Row>
+          <Row xs={5}>
+            <Button variant="danger" onClick={() => setData(getTagsFromInitialText(storage))}>
+              reset
+            </Button>
+          </Row>
+        </Col>
       </Row>
     </Container>
   );
