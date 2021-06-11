@@ -1,13 +1,27 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable no-unused-vars */
+import React, { useEffect, useState, useRef } from 'react';
 import uniqid from 'uniqid';
 import { Button, ButtonGroup, Form } from 'react-bootstrap';
 
 const EditForm = ({ content, saveNote, updateNote }) => {
   const [noteData, setNoteData] = useState({});
+  const highlitedText = useRef(null);
+  const textArea = useRef(null);
+  const backDrop = useRef(null);
+
+  const applyHighlights = (text) =>
+    text.replace(/\n$/g, '\n\n').replace(/#\w+/g, '<mark>$&</mark>');
 
   useEffect(() => {
     setNoteData(content);
+    highlitedText.current.innerHTML = applyHighlights(content.text || '');
   }, [content]);
+
+  const handleScroll = () => {
+    const { scrollTop } = textArea.current;
+    backDrop.current.scrollTop = scrollTop;
+    highlitedText.current.scrollTop = scrollTop;
+  };
 
   const handleSubmit = (e) => {
     const title = e.target[0].value;
@@ -28,11 +42,15 @@ const EditForm = ({ content, saveNote, updateNote }) => {
   };
 
   const handleTitleChange = (event) => setNoteData({ ...noteData, title: event.target.value });
-  const handleTextChange = (event) => setNoteData({ ...noteData, text: event.target.value });
+  const handleTextChange = (event) => {
+    const { value } = event.target;
+    highlitedText.current.innerHTML = applyHighlights(value);
+    setNoteData({ ...noteData, text: value });
+  };
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Form.Group>
+      <Form.Group as="div" className="wrapper">
         <Form.Control
           onChange={handleTitleChange}
           value={noteData.title || ''}
@@ -40,13 +58,15 @@ const EditForm = ({ content, saveNote, updateNote }) => {
           placeholder="title"
           required
         />
-        <Form.Control
-          as="textarea"
+        <div ref={backDrop} className="backdrop">
+          <div ref={highlitedText} className="highlights" />
+        </div>
+        <textarea
+          ref={textArea}
+          onScroll={handleScroll}
           onChange={handleTextChange}
-          value={noteData.text || ''}
-          size="md"
-          placeholder="text"
           required
+          value={noteData.text || ''}
         />
         <ButtonGroup>
           <Button type="submit" variant="primary">

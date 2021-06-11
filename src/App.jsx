@@ -110,9 +110,6 @@ const App = () => {
               updateNote={handleUpdateNote}
             />
           </Row>
-          <Row>
-            <Tags data={data} applyFilter={handleApplyFilter} />
-          </Row>
           <Row xs={6}>
             <Button variant="warning" onClick={handleCreateNew}>
               new
@@ -126,6 +123,9 @@ const App = () => {
             <Button variant="danger" onClick={() => resetFilters()}>
               reset filters
             </Button>
+          </Row>
+          <Row>
+            <Tags data={data} applyFilter={handleApplyFilter} />
           </Row>
         </Col>
       </Row>
