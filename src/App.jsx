@@ -110,7 +110,7 @@ const App = () => {
               updateNote={handleUpdateNote}
             />
           </Row>
-          <Row xs={6}>
+          <Row xs={6} className="additional-buttons">
             <Button variant="warning" onClick={handleCreateNew}>
               new
             </Button>

@@ -18,7 +18,8 @@
 %text-highlits {
     padding: 0 0;
     margin: 0 0;
-    width: 400px;
+    min-width: 400px;
+    width: 600px;
     font-size: 1rem;
     overflow: auto;
 }
@@ -26,6 +27,10 @@
 .backdrop, .highlights {
     @extend %text-highlits;
     height: 200px;
+}
+
+.row {
+    margin-bottom: 2rem
 }
 
 .wrapper {
@@ -67,4 +72,13 @@ mark {
 .tags-wrapper {
     display: flex;
     flex-wrap: wrap;
+}
+
+.additional-buttons {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.card-body {
+    word-wrap: anywhere;
 }
