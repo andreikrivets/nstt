@@ -17,7 +17,6 @@ const App = () => {
   const [filtredData, setFiltredData] = useState([]);
   const [currentNote, setCurrentNote] = useState('');
   const [mode, setMode] = useState('edit');
-  // eslint-disable-next-line no-unused-vars
   const [isFiltred, setIsfiltred] = useState(false);
   const [filter, setFilter] = useState('');
 
@@ -61,17 +60,19 @@ const App = () => {
     });
   };
 
+  const resetFilters = () => {
+    setFilter([]);
+    setIsfiltred(false);
+    setFiltredData(() => []);
+  };
+
   const handleRemoveFilter = (filterName) => {
     const newFilters = filter.filter((tag) => tag !== filterName);
     if (newFilters.length) {
       setIsfiltred(true);
       setFilter(newFilters);
       setFiltredData(() => getFiltredData(data, newFilters));
-    } else {
-      setFilter([]);
-      setIsfiltred(false);
-      setFiltredData(() => []);
-    }
+    } else resetFilters();
   };
 
   return (
@@ -114,7 +115,7 @@ const App = () => {
             <Button variant="danger" onClick={() => setData(getTagsFromInitialText(storage))}>
               reset all
             </Button>
-            <Button variant="danger" onClick={() => setFilter('')}>
+            <Button variant="danger" onClick={() => resetFilters()}>
               reset filters
             </Button>
           </Row>
