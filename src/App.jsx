@@ -14,11 +14,11 @@ import getFiltredData from './utils/getFiltredData';
 
 const App = () => {
   const [data, setData] = useState([]);
-  const [filtredData, setFiltredData] = useState([]);
   const [currentNote, setCurrentNote] = useState('');
   const [mode, setMode] = useState('edit');
-  const [isFiltred, setIsfiltred] = useState(false);
-  const [filter, setFilter] = useState('');
+
+  const initialFilter = { data: {}, state: false, tags: [] };
+  const [filter, setFilter] = useState(initialFilter);
 
   useEffect(() => {
     setData(getTagsFromInitialText(storage));
@@ -34,10 +34,10 @@ const App = () => {
   };
   const handleUpdateNote = (newNote) => {
     setCurrentNote(newNote);
-    setData((prev) => {
-      const newData = prev.map((note) => (note.id === newNote.id ? newNote : note));
-      if (isFiltred) {
-        setFiltredData(() => getFiltredData(newData, filter));
+    setData((prevData) => {
+      const newData = prevData.map((note) => (note.id === newNote.id ? newNote : note));
+      if (filter.state) {
+        setFilter((prev) => ({ ...prev, data: getFiltredData(newData, filter.tags) }));
       }
       return newData;
     });
@@ -52,26 +52,25 @@ const App = () => {
   };
 
   const handleApplyFilter = (tag) => {
-    setIsfiltred(true);
     setFilter((prev) => {
-      const uniqueFilter = Array.from(new Set([...prev, tag]));
-      setFiltredData(() => getFiltredData(data, uniqueFilter));
-      return uniqueFilter;
+      const uniqueFilter = Array.from(new Set([...prev.tags, tag]));
+      return { ...prev, state: true, data: getFiltredData(data, uniqueFilter), tags: uniqueFilter };
     });
   };
 
   const resetFilters = () => {
-    setFilter([]);
-    setIsfiltred(false);
-    setFiltredData(() => []);
+    setFilter(initialFilter);
   };
 
   const handleRemoveFilter = (filterName) => {
-    const newFilters = filter.filter((tag) => tag !== filterName);
+    const newFilters = filter.tags.filter((tag) => tag !== filterName);
     if (newFilters.length) {
-      setIsfiltred(true);
-      setFilter(newFilters);
-      setFiltredData(() => getFiltredData(data, newFilters));
+      setFilter((prev) => ({
+        ...prev,
+        state: true,
+        tags: newFilters,
+        data: getFiltredData(data, newFilters),
+      }));
     } else resetFilters();
   };
 
@@ -84,10 +83,10 @@ const App = () => {
       </Row>
       <Row>
         <Col xs={3}>
-          <CurrentFilter filter={filter} removeFilter={handleRemoveFilter} />
+          <CurrentFilter filter={filter.tags} removeFilter={handleRemoveFilter} />
           {data.length ? (
             <Notes
-              data={isFiltred ? filtredData : data}
+              data={filter.state ? filter.data : data}
               handleEdit={handleEdit}
               handleDelete={handleDelete}
               handleOpen={handleOpen}
