@@ -29,7 +29,12 @@ const App = () => {
     setCurrentNote(note);
   };
   const handleDelete = (id) => {
-    setData((prev) => prev.filter((note) => note.id !== id));
+    setData((prevData) => {
+      const newData = prevData.filter((note) => note.id !== id);
+      if (filter.state)
+        setFilter((prev) => ({ ...prev, data: getFiltredData(newData, filter.tags) }));
+      return newData;
+    });
     setCurrentNote('');
   };
   const handleUpdateNote = (newNote) => {
