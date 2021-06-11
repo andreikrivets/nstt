@@ -11,6 +11,7 @@ import CurrentFilter from './components/Filter';
 import storage from './data/storage.json';
 import getTagsFromInitialText from './utils/getTagsFromInitialText';
 import getFiltredData from './utils/getFiltredData';
+import getMockData from './utils/getMockData';
 
 const App = () => {
   const [data, setData] = useState([]);
@@ -115,6 +116,9 @@ const App = () => {
           <Row xs={6}>
             <Button variant="warning" onClick={handleCreateNew}>
               new
+            </Button>
+            <Button variant="warning" onClick={() => setData((prev) => [...prev, getMockData()])}>
+              mock
             </Button>
             <Button variant="danger" onClick={() => setData(getTagsFromInitialText(storage))}>
               reset all
