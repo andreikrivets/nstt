@@ -12,14 +12,14 @@ import storage from './data/storage.json';
 import getTagsFromInitialText from './utils/getTagsFromInitialText';
 import getFiltredData from './utils/getFiltredData';
 import getMockData from './utils/getMockData';
+import { applyFilter, resetFilter, removeFilter } from './utils/filter/filterOperations';
 
 const App = () => {
   const [data, setData] = useState([]);
   const [currentNote, setCurrentNote] = useState('');
   const [mode, setMode] = useState('edit');
 
-  const initialFilter = { data: {}, state: false, tags: [] };
-  const [filter, setFilter] = useState(initialFilter);
+  const [filter, setFilter] = useState({ data: {}, state: false, tags: [] });
 
   useEffect(() => {
     setData(getTagsFromInitialText(storage));
@@ -57,29 +57,6 @@ const App = () => {
     setCurrentNote('');
   };
 
-  const handleApplyFilter = (tag) => {
-    setFilter((prev) => {
-      const uniqueFilter = Array.from(new Set([...prev.tags, tag]));
-      return { ...prev, state: true, data: getFiltredData(data, uniqueFilter), tags: uniqueFilter };
-    });
-  };
-
-  const resetFilters = () => {
-    setFilter(initialFilter);
-  };
-
-  const handleRemoveFilter = (filterName) => {
-    const newFilters = filter.tags.filter((tag) => tag !== filterName);
-    if (newFilters.length) {
-      setFilter((prev) => ({
-        ...prev,
-        state: true,
-        tags: newFilters,
-        data: getFiltredData(data, newFilters),
-      }));
-    } else resetFilters();
-  };
-
   return (
     <Container fluid="xl">
       <Row>
@@ -89,7 +66,10 @@ const App = () => {
       </Row>
       <Row>
         <Col xs={3}>
-          <CurrentFilter filter={filter.tags} removeFilter={handleRemoveFilter} />
+          <CurrentFilter
+            filter={filter.tags}
+            removeFilter={(tag) => removeFilter(filter.tags, setFilter, data, tag)}
+          />
           {data.length ? (
             <Notes
               data={filter.state ? filter.data : data}
@@ -120,12 +100,12 @@ const App = () => {
             <Button variant="danger" onClick={() => setData(getTagsFromInitialText(storage))}>
               reset all
             </Button>
-            <Button variant="danger" onClick={() => resetFilters()}>
+            <Button variant="danger" onClick={() => resetFilter(setFilter)}>
               reset filters
             </Button>
           </Row>
           <Row>
-            <Tags data={data} applyFilter={handleApplyFilter} />
+            <Tags data={data} applyFilter={(tag) => applyFilter(setFilter, data, tag)} />
           </Row>
         </Col>
       </Row>
