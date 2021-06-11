@@ -19,9 +19,14 @@
     padding: 0 0;
     margin: 0 0;
     min-width: 400px;
-    width: 600px;
+    width: 800px;
     font-size: 1rem;
     overflow: auto;
+}
+
+.card-wrapper {
+    @extend %text-highlits;
+    height: 200px
 }
 
 .backdrop, .highlights {

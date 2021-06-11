@@ -9,9 +9,11 @@ const ShowForm = ({ content }) => {
   const element = parse(highlitedText);
   return (
     <>
-      <Card>
-        <Card.Title>{content.title}</Card.Title>
-        <Card.Body>{element}</Card.Body>
+      <Card className="card-wrapper">
+        <Card.Body>
+          <Card.Title>{content.title}</Card.Title>
+          <Card.Text>{element}</Card.Text>
+        </Card.Body>
       </Card>
     </>
   );
