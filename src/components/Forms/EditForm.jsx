@@ -36,6 +36,7 @@ const EditForm = ({ content, saveNote, updateNote }) => {
       });
     }
     setNoteData({});
+    highlitedText.current.innerHTML = '';
     e.preventDefault();
   };
 
