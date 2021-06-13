@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import uniqid from 'uniqid';
-import { Button, ButtonGroup, Form } from 'react-bootstrap';
+import { Button, Form, Card } from 'react-bootstrap';
 
 const EditForm = ({ content, saveNote, updateNote }) => {
   const [noteData, setNoteData] = useState({});
@@ -48,33 +48,33 @@ const EditForm = ({ content, saveNote, updateNote }) => {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <Form.Group as="div" className="wrapper">
-        <Form.Control
-          onChange={handleTitleChange}
-          value={noteData.title || ''}
-          size="md"
-          placeholder="title"
-          required
-        />
-        <div ref={backDrop} className="backdrop">
-          <div ref={highlitedText} className="highlights" />
-        </div>
-        <textarea
-          ref={textArea}
-          onScroll={handleScroll}
-          onChange={handleTextChange}
-          required
-          value={noteData.text || ''}
-          placeholder="text"
-        />
-        <ButtonGroup>
+    <Card className="card-wrapper">
+      <Form onSubmit={handleSubmit}>
+        <Form.Group as="div" className="wrapper">
+          <Form.Control
+            onChange={handleTitleChange}
+            value={noteData.title || ''}
+            size="md"
+            placeholder="title"
+            required
+          />
+          <div ref={backDrop} className="backdrop">
+            <div ref={highlitedText} className="highlights" />
+          </div>
+          <textarea
+            ref={textArea}
+            onScroll={handleScroll}
+            onChange={handleTextChange}
+            required
+            value={noteData.text || ''}
+            placeholder="text"
+          />
           <Button type="submit" variant="primary">
             save
           </Button>
-        </ButtonGroup>
-      </Form.Group>
-    </Form>
+        </Form.Group>
+      </Form>
+    </Card>
   );
 };
 

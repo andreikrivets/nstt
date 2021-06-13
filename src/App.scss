@@ -11,27 +11,33 @@
     color: darkcyan
 }
 
-.list-group-item:first-child {
-    width: 10rem
+.list-group-item {
+    padding: 0.5rem;
+    &:first-child {
+        min-width: 11rem;
+    }
 }
 
 %text-highlits {
     padding: 0 0;
     margin: 0 0;
     min-width: 400px;
-    width: 800px;
+    width: 600px;
     font-size: 1rem;
     overflow: auto;
+    scrollbar-width: thin;
 }
 
 .card-wrapper {
     @extend %text-highlits;
-    height: 200px
+    width: 650px;
+    height: 400px;
+    border: none;
 }
 
 .backdrop, .highlights {
     @extend %text-highlits;
-    height: 200px;
+    height: 300px;
 }
 
 .row {
@@ -42,7 +48,7 @@
     @extend %text-highlits; 
     textarea {
         @extend %text-highlits;
-        height: 200px;
+        height: 300px;
         position: relative;
         color: #444;
         background-color: transparent;
@@ -90,4 +96,8 @@ mark {
 
 strong {
     background-color: #d4e9ab;
+}
+
+.notes-list {
+    scrollbar-width: thin;
 }

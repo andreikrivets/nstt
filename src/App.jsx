@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Container, Row, Col, Button, ButtonGroup } from 'react-bootstrap';
 
 import './App.scss';
 import Forms from './components/Forms';
@@ -18,7 +18,6 @@ const App = () => {
   const [data, setData] = useState([]);
   const [currentNote, setCurrentNote] = useState('');
   const [mode, setMode] = useState('edit');
-
   const [filter, setFilter] = useState({ data: {}, state: false, tags: [] });
 
   useEffect(() => {
@@ -90,7 +89,12 @@ const App = () => {
               updateNote={handleUpdateNote}
             />
           </Row>
-          <Row xs={6} className="additional-buttons">
+          <Row>
+            <Tags data={data} applyFilter={(tag) => applyFilter(setFilter, data, tag)} />
+          </Row>
+        </Col>
+        <Col xs={1}>
+          <ButtonGroup vertical>
             <Button variant="warning" onClick={handleCreateNew}>
               new
             </Button>
@@ -103,10 +107,7 @@ const App = () => {
             <Button variant="danger" onClick={() => resetFilter(setFilter)}>
               reset filters
             </Button>
-          </Row>
-          <Row>
-            <Tags data={data} applyFilter={(tag) => applyFilter(setFilter, data, tag)} />
-          </Row>
+          </ButtonGroup>
         </Col>
       </Row>
     </Container>
