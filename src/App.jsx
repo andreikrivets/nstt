@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Button, ButtonGroup } from 'react-bootstrap';
+import { Container, Row, Col, Button, ButtonGroup, Alert } from 'react-bootstrap';
 
 import './App.scss';
 import Forms from './components/Forms';
@@ -20,13 +20,23 @@ const App = () => {
   const [mode, setMode] = useState('edit');
   const [filter, setFilter] = useState({ data: {}, state: false, tags: [] });
 
+  const [alertSection, setAlertSection] = useState({ show: false, message: '' });
+
   useEffect(() => {
     setData(getTagsFromInitialText(storage));
   }, []);
 
+  const showAlert = (text) => {
+    setAlertSection((prev) => ({ ...prev, message: text, show: true }));
+    setTimeout(() => {
+      setAlertSection((prev) => ({ ...prev, message: '', show: false }));
+    }, 3000);
+  };
+
   const handleEdit = (note) => {
     setMode('edit');
     setCurrentNote(note);
+    showAlert('edit');
   };
   const handleDelete = (id) => {
     setData((prevData) => {
@@ -36,6 +46,7 @@ const App = () => {
       return newData;
     });
     setCurrentNote('');
+    showAlert('note deleted');
   };
   const handleUpdateNote = (newNote) => {
     setCurrentNote(newNote);
@@ -46,6 +57,7 @@ const App = () => {
       }
       return newData;
     });
+    showAlert('note updated');
   };
   const handleOpen = (note) => {
     setMode('show');
@@ -56,11 +68,21 @@ const App = () => {
     setCurrentNote('');
   };
 
+  const handleSaveNewNote = (newNote) => {
+    setData(() => [...data, newNote]);
+    showAlert('saved');
+  };
+
   return (
     <Container fluid="xl">
       <Row>
-        <Col>
+        <Col className="header-wrapper">
           <Header />
+          {alertSection.show ? (
+            <Alert className="alert-message" variant="info">
+              {alertSection.message}
+            </Alert>
+          ) : null}
         </Col>
       </Row>
       <Row>
@@ -85,7 +107,7 @@ const App = () => {
             <Forms
               mode={mode}
               content={currentNote}
-              saveNote={(newNote) => setData(() => [...data, newNote])}
+              saveNote={handleSaveNewNote}
               updateNote={handleUpdateNote}
             />
           </Row>
