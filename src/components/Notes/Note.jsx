@@ -1,8 +1,11 @@
 import React from 'react';
 import { ListGroup } from 'react-bootstrap';
+import { connect } from 'react-redux';
+
+import { onEdit, onOpen, onDelete } from '../../actions';
 
 const Note = (props) => {
-  const { data, handleEdit, handleDelete, handleOpen, style } = props;
+  const { data, onEdit: handleEdit, onDelete: handleDelete, onOpen: handleOpen, style } = props;
   if (!data) return null;
   return (
     <ListGroup style={style} horizontal>
@@ -19,4 +22,12 @@ const Note = (props) => {
   );
 };
 
-export default Note;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onOpen: (current) => dispatch(onOpen(current)),
+    onEdit: (current) => dispatch(onEdit(current)),
+    onDelete: (id) => dispatch(onDelete(id)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Note);

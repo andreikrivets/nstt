@@ -1,8 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { connect } from 'react-redux';
 import uniqid from 'uniqid';
 import { Button, Form, Card } from 'react-bootstrap';
 
-const EditForm = ({ content, saveNote, updateNote }) => {
+import { onSave, onUpdate } from '../../actions/index';
+
+const EditForm = (props) => {
+  const { content, saveNote, updateNote } = props;
   const [noteData, setNoteData] = useState({});
   const highlitedText = useRef(null);
   const textArea = useRef(null);
@@ -78,4 +82,11 @@ const EditForm = ({ content, saveNote, updateNote }) => {
   );
 };
 
-export default EditForm;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    saveNote: (newNote) => dispatch(onSave(newNote)),
+    updateNote: (newNote) => dispatch(onUpdate(newNote)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(EditForm);

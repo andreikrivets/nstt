@@ -1,28 +1,20 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { List, AutoSizer } from 'react-virtualized/dist/commonjs/';
 
 import Note from './Note';
 
-const Notes = ({ data, handleEdit, handleDelete, handleOpen }) => {
-  if (!data) return null;
-  const content = [...data];
-  if (!content) return null;
-
+const Notes = (props) => {
+  const { data, filtredData, filtred } = props;
+  if (!data || !data.length) return <span>no notes :(</span>;
+  const content = filtred ? [...filtredData] : [...data];
+  if (!content.length) return <div>no matching notes</div>;
   const lng = content.length;
   let rowHeight = 42;
 
   const renderRow = ({ index, key, style }) => {
     rowHeight = style.height;
-    return (
-      <Note
-        handleEdit={handleEdit}
-        handleDelete={handleDelete}
-        handleOpen={handleOpen}
-        style={style}
-        data={data[index]}
-        key={key}
-      />
-    );
+    return <Note style={style} data={content[index]} key={key} />;
   };
 
   return (
@@ -41,4 +33,13 @@ const Notes = ({ data, handleEdit, handleDelete, handleOpen }) => {
   );
 };
 
-export default Notes;
+const mapStateToProps = (state) => {
+  const { data, filtredData, filtred } = state.notes;
+  return {
+    data,
+    filtredData,
+    filtred,
+  };
+};
+
+export default connect(mapStateToProps, null)(Notes);

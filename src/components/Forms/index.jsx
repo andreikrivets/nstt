@@ -1,12 +1,21 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import EditForm from './EditForm';
 import ShowForm from './ShowForm';
 
-const Forms = ({ mode, content, saveNote, updateNote }) => {
-  if (mode === 'edit')
-    return <EditForm content={content} saveNote={saveNote} updateNote={updateNote} />;
-  return <ShowForm content={content} />;
+const Forms = (props) => {
+  const { mode, current } = props;
+  if (mode === 'edit') return <EditForm content={current} />;
+  return <ShowForm content={current} />;
 };
 
-export default Forms;
+const mapStateToProps = (state) => {
+  const { mode, current } = state.notes;
+  return {
+    mode,
+    current,
+  };
+};
+
+export default connect(mapStateToProps, null)(Forms);

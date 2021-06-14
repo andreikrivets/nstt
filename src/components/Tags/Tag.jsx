@@ -1,7 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
 
-const Tag = ({ tagText, applyFilter }) => {
+import { onCreateFilter } from '../../actions';
+
+const Tag = (props) => {
+  const { tagText, applyFilter } = props;
   return (
     <Button variant="light" onClick={() => applyFilter(tagText)}>
       {tagText}
@@ -9,4 +13,10 @@ const Tag = ({ tagText, applyFilter }) => {
   );
 };
 
-export default Tag;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    applyFilter: (tag) => dispatch(onCreateFilter(tag)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Tag);
