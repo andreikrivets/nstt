@@ -94,7 +94,7 @@ const notes = (state = defaultNotesState, action) => {
     }
 
     case types.RESET_FILTER: {
-      return { ...state, filtred: false, filter: [], current: {} };
+      return { ...state, filtred: false, filter: [], current: { title: 'title', text: 'text' } };
     }
 
     default:
