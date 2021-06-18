@@ -72,7 +72,7 @@ const notes = (state = defaultNotesState, action) => {
       return { ...state, data: [...state.data, action.payload] };
 
     case types.CREATE_NOTE:
-      return { ...state, current: {} };
+      return { ...state, current: { title: 'title', text: 'text' } };
 
     case types.CREATE_MOCK:
       return { ...state, data: [...state.data, action.payload] };
