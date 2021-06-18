@@ -18,7 +18,7 @@ const Header = ({ alert }) => {
 };
 
 const mapStateToProps = (state) => {
-  const { alert } = state.notes;
+  const { alert } = state.app;
   return {
     alert,
   };
