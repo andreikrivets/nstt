@@ -1,70 +1,67 @@
-import {
-  CREATE_MOCK,
-  CREATE_NOTE,
-  DELETE_NOTE,
-  EDIT_NOTE,
-  FETCH_INITIAL,
-  OPEN_NOTE,
-  RESET_FILTER,
-  SAVE_NOTE,
-  UPDATE_NOTE,
-  CREATE_FILTER,
-  REMOVE_FILTER,
-} from './types';
+import * as types from './types';
 
 import initialData from '../data/storage.json';
 import getTagsFromInitialText from '../utils/getTagsFromText';
 import getMockData from '../utils/getMockData';
 
-export const getInitialData = {
-  type: FETCH_INITIAL,
+export const getInitialData = () => ({
+  type: types.FETCH_INITIAL,
   data: getTagsFromInitialText(initialData),
-};
-
-export const onEdit = (current) => ({
-  type: EDIT_NOTE,
-  payload: current,
 });
 
 export const onOpen = (current) => ({
-  type: OPEN_NOTE,
+  type: types.OPEN_NOTE,
   payload: current,
 });
 
 export const onDelete = (id) => ({
-  type: DELETE_NOTE,
+  type: types.DELETE_NOTE,
   payload: id,
 });
 
 export const onSave = (newNote) => ({
-  type: SAVE_NOTE,
+  type: types.SAVE_NOTE,
   payload: newNote,
 });
 
-export const onUpdate = (newNote) => ({
-  type: UPDATE_NOTE,
-  payload: newNote,
+export const onUpdateTitle = (newTitle, id) => ({
+  type: types.UPDATE_TITLE,
+  payload: [newTitle, id],
+});
+
+export const onUpdateText = (params) => ({
+  type: types.UPDATE_TEXT,
+  payload: params,
 });
 
 export const onCreate = () => ({
-  type: CREATE_NOTE,
+  type: types.CREATE_NOTE,
 });
 
 export const onCreateMock = () => ({
-  type: CREATE_MOCK,
+  type: types.CREATE_MOCK,
   payload: getMockData(),
 });
 
 export const onCreateFilter = (tag) => ({
-  type: CREATE_FILTER,
+  type: types.CREATE_FILTER,
   payload: tag,
 });
 
 export const onRemoveFilter = (tag) => ({
-  type: REMOVE_FILTER,
+  type: types.REMOVE_FILTER,
   payload: tag,
 });
 
 export const onResetFilter = () => ({
-  type: RESET_FILTER,
+  type: types.RESET_FILTER,
+});
+
+export const showAlert = (message) => ({
+  type: types.SHOW_ALERT,
+  payload: message,
+});
+
+export const hideAlert = () => ({
+  type: types.HIDE_ALERT,
 });

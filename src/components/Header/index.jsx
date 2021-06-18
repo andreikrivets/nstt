@@ -1,9 +1,27 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { Alert } from 'react-bootstrap';
 
-const Header = () => (
-  <a href="/" className="logo">
-    notes app
-  </a>
-);
+const Header = ({ alert }) => {
+  return (
+    <>
+      <a href="/" className="logo">
+        notes app
+      </a>
+      {alert ? (
+        <Alert className="alert-message" variant="primary">
+          {alert}
+        </Alert>
+      ) : null}
+    </>
+  );
+};
 
-export default Header;
+const mapStateToProps = (state) => {
+  const { alert } = state.notes;
+  return {
+    alert,
+  };
+};
+
+export default connect(mapStateToProps, null)(Header);

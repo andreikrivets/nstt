@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { List, AutoSizer } from 'react-virtualized/dist/commonjs/';
 
+import { getInitialData } from '../../actions';
 import Note from './Note';
 
 const Notes = (props) => {
-  const { data, filtredData, filtred } = props;
+  const { data, filtredData, filtred, getData } = props;
+  useEffect(() => {
+    getData();
+  }, []);
   if (!data || !data.length) return <span>no notes :(</span>;
   const content = filtred ? [...filtredData] : [...data];
   if (!content.length) return <div>no matching notes</div>;
@@ -42,4 +46,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(Notes);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getData: () => dispatch(getInitialData()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Notes);

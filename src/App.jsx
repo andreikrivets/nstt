@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
+import { connect } from 'react-redux';
 
 import './App.scss';
 import Forms from './components/Forms';
@@ -9,14 +10,9 @@ import Notes from './components/Notes';
 import CurrentFilter from './components/Filter';
 
 import { getInitialData } from './actions';
-import store from './store/store';
 import ControlGroup from './components/Control';
 
 const App = () => {
-  useEffect(() => {
-    store.dispatch(getInitialData);
-  }, []);
-
   return (
     <Container fluid="xl">
       <Row>
@@ -45,4 +41,10 @@ const App = () => {
   );
 };
 
-export default App;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getData: () => dispatch(getInitialData()),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(App);
